@@ -1,7 +1,8 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const WebpackMd5Hash = require('webpack-md5-hash');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: path.resolve('src', 'index.js'),
@@ -21,24 +22,15 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: "css-loader",
-                        options: {}
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: {}
-                    }
+                    MiniCssExtractPlugin.loader, "css-loader", 'postcss-loader', "sass-loader"
                 ]
             }
         ]
     },
     plugins: [
+        new CleanWebpackPlugin('dist', {}),
         new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: "style.[chunkhash].css",
+            filename: "style.[contenthash].css",
             chunkFilename: "[id].css"
         }),
         new HtmlWebpackPlugin({
@@ -46,6 +38,7 @@ module.exports = {
             hash: true,
             template: './src/index.html',
             filename: 'index.html'
-        })
+        }),
+        new WebpackMd5Hash()
     ]
 };
