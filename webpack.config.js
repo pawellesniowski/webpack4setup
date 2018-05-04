@@ -7,7 +7,7 @@ module.exports = {
     entry: path.resolve('src', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js'
+        filename: '[name].[chunkhash].js'
     },
     module: {
         rules: [
@@ -19,7 +19,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(css|scss)$/,
+                test: /\.scss$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -38,7 +38,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
-            filename: "[name].css",
+            filename: "style.[chunkhash].css",
             chunkFilename: "[id].css"
         }),
         new HtmlWebpackPlugin({
